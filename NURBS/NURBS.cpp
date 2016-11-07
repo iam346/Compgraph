@@ -154,7 +154,7 @@ void render()
     {
         glBegin ( GL_LINE_STRIP );
 
-        for ( int i=0; i<control_points.size(); i++ )
+        for ( int i=0; i<knots.size()-1; i++ )
         {
             for ( double u=knots.at ( i ); u<knots.at ( i+1 ); u+=0.01 )
             {
