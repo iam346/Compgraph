@@ -1,4 +1,4 @@
-/**
+/**s
  * Author: Badó Gergely József
  *
  * Használat:
@@ -7,7 +7,11 @@
  * fel-le nyilak fokszám változtatás
  * w-s gombokkal kiválaszthatunk egy kívánt pontot aminek később az a-d gombokkal változtathatjuk a súlyát
  * k gomb megnyomásával megkapjuk a jelenlegi csomópont vektort és meg kell adnunk egy újat
- *
+ * 
+ * implementált algorimusok: 
+ * http://old.ektf.hu/tanszek/matematika/cagd/cagd.html         racionális görbék menüpont 
+ * https://en.wikipedia.org/wiki/De_Boor%27s_algorithm
+ * 
  **/
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
