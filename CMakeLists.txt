@@ -8,7 +8,7 @@ PROJECT(Compgraph CXX)
 
 SET(PACKAGE_NAME "Compgraph")
 
-SUBDIRS(B-Spline NURBS)
+SUBDIRS(B-Spline NURBS Subdivision)
 
 SET(CMAKE_VERBOSE_MAKEFILE on)
 

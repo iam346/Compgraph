@@ -113,7 +113,7 @@ std::vector<GLdouble> getKnots ( int degree, int controlNum )
     if ( temp.at ( temp.size()-1 ) !=0 )
         last=temp.at ( temp.size()-1 );
 
-    for ( int i=0; i<degree; i++ )
+    for ( int i=0; i<degree-1; i++ )
         temp.push_back ( last );
 
     return temp;
