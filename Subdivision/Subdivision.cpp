@@ -13,9 +13,11 @@
 typedef graph::point2D<GLdouble> point2D;
 point2D size ( 800,600 );
 std::vector<point2D> control_points;
+GLdouble w1=-1.0/16.0,w2=9.0/16.0,w3=9.0/16.0,w4=-1.0/16.0;
+//GLdouble w1=-1.0/4.0,w2=3.0/4.0,w3=4.0/4.0,w4=-1.0/4.0;
 
 GLint selectedPointIndex=-1,repeat_number=1;
-bool move=false, allow_new_point=false, first=true;
+bool move=false, allow_new_point=false, first=true,allow_control_point=false;
 
 void init()
 {
@@ -29,7 +31,7 @@ void init()
     glLineWidth ( 2.0 );
 }
 
-void draw_subdivision()
+void draw_subdivision2()
 {
     std::vector<point2D> control_points_copy=control_points;
 
@@ -40,13 +42,45 @@ void draw_subdivision()
         for ( int i=0; i<control_points_copy.size()-1; i++ )
             q_points.push_back ( ( control_points_copy[i]+control_points_copy[i+1] ) * ( 1.0/2.0 ) );
 
-        for ( int i=1; i<control_points_copy.size()-1; i++ )
-            control_points_copy[i]=control_points_copy[i]* ( 1.0/2.0 ) + ( q_points[i-1]+q_points[i] ) * ( 1.0/4.0 );
+        //for ( int i=1; i<control_points_copy.size()-1; i++ )
+        //  control_points_copy[i]=control_points_copy[i]* ( 1.0/2.0 ) + ( q_points[i-1]+q_points[i] ) * ( 1.0/4.0 );
 
-            for ( int i=control_points_copy.size()-1; i>0; i-- )
-              control_points_copy.insert ( control_points_copy.begin() +i,q_points[i-1] );
+        for ( int i= ( ( int ) control_points_copy.size()-1 ); i>0; i-- )
+            control_points_copy.insert ( control_points_copy.begin() +i,q_points[i-1] );
+    }
+    glColor3f ( 0,0,1 );
+
+    glBegin ( GL_LINE_STRIP );
+    for ( point2D point : control_points_copy ) //point2D point : control_points_copy
+    {
+        glVertex2d ( point.getX(),point.getY() );
+    }
+    glEnd();
+}
+
+void draw_subdivision()
+{
+
+    std::vector<point2D> control_points_copy=control_points;
+
+    for ( int counter=0; counter<repeat_number; counter++ )
+    {
+        std::vector<point2D> newVector;
+        for ( int i=0; i<control_points_copy.size()-3; i++ )
+        {
+            newVector.push_back ( control_points_copy.at ( i ) *w1 +
+                                  control_points_copy.at ( i+1 ) *w2 +
+                                  control_points_copy.at ( i+2 ) *w3 +
+                                  control_points_copy.at ( i+3 ) *w4 );
+        }
+        for ( int i=0; i<newVector.size(); i++ )
+        {
+            control_points_copy.insert ( control_points_copy.begin() +i+2+i,newVector[i] );
+        }
     }
 
+    glColor3f ( 0,0,1 );
+    std::cout<<control_points_copy.size() <<std::endl;
     glBegin ( GL_LINE_STRIP );
     for ( point2D point : control_points_copy ) //point2D point : control_points_copy
     {
@@ -69,14 +103,17 @@ void render()
         glEnd();
     }
 
-    glBegin ( GL_LINE_STRIP );
-    for ( point2D point : control_points )
+    if ( allow_control_point )
     {
-        glVertex2d ( point.getX(),point.getY() );
+        glBegin ( GL_LINE_STRIP );
+        for ( point2D point : control_points )
+        {
+            glVertex2d ( point.getX(),point.getY() );
+        }
+        glEnd();
     }
-    glEnd();
 
-    if ( control_points.size() >=3 )
+    if ( control_points.size() >=4 )
         draw_subdivision();
 
 }
@@ -147,6 +184,9 @@ void keyListener ( GLFWwindow* windows, GLint key, GLint scanCode, GLint action,
             allow_new_point = true;
             break;
 
+        case GLFW_KEY_C:
+            allow_control_point=!allow_control_point;
+
         default:
             break;
         }
@@ -193,5 +233,3 @@ int main ( int argc, char** argv )
 
     return 0;
 }
-
-
