@@ -1,14 +1,14 @@
-#B-Spline curve
+#Subdivision_Curve curve
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-SET(PACKAGE_NAME B-Splines)
+SET(PACKAGE_NAME Subdivision_Curve)
 PROJECT(BSpline CXX)
 
 add_compile_options(-std=c++11)
 SET(CMAKE_C_COMPILER g++)
 
-AUX_SOURCE_DIRECTORY(. B-Spline)
-ADD_LIBRARY(${PACKAGE_NAME} )
+AUX_SOURCE_DIRECTORY(. Subdivision_Curve)
+ADD_LIBRARY(${PACKAGE_NAME})
 
 INCLUDE_DIRECTORIES(. ../inc)
 
@@ -21,8 +21,8 @@ FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(GLUT REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
-add_executable(B-Spline.out B-Spline.cpp)
+add_executable(Subdivision_Curve.out Subdivision_Curve.cpp)
 
 INCLUDE_DIRECTORIES( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} )
 
-TARGET_LINK_LIBRARIES(B-Spline.out ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES} )
+TARGET_LINK_LIBRARIES(Subdivision_Curve.out ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES} )

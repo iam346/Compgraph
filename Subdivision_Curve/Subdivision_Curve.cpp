@@ -60,32 +60,33 @@ void draw_subdivision2()
 
 void draw_subdivision()
 {
-
     std::vector<point2D> control_points_copy=control_points;
-
+    
     for ( int counter=0; counter<repeat_number; counter++ )
     {
         std::vector<point2D> newVector;
-        for ( int i=0; i<control_points_copy.size()-3; i++ )
+        for ( int i=0; i<control_points_copy.size(); i++ )
         {
-            newVector.push_back ( control_points_copy.at ( i ) *w1 +
-                                  control_points_copy.at ( i+1 ) *w2 +
-                                  control_points_copy.at ( i+2 ) *w3 +
-                                  control_points_copy.at ( i+3 ) *w4 );
+            int index=i-1;
+            if ( i-1<0 )
+                index=control_points_copy.size()-1;
+
+            newVector.push_back ( control_points_copy.at ( i ) );
+            newVector.push_back ( control_points_copy.at ( index ) *w1 +
+                                  control_points_copy.at ( i ) *w2 +
+                                  control_points_copy.at ( ( int ) ( ( i+1 ) %control_points_copy.size() ) ) *w3 +
+                                  control_points_copy.at ( ( int ) ( ( i+2 ) %control_points_copy.size() ) ) *w4 );
         }
-        for ( int i=0; i<newVector.size(); i++ )
-        {
-            control_points_copy.insert ( control_points_copy.begin() +i+2+i,newVector[i] );
-        }
+        control_points_copy=newVector;
     }
 
     glColor3f ( 0,0,1 );
-    std::cout<<control_points_copy.size() <<std::endl;
     glBegin ( GL_LINE_STRIP );
     for ( point2D point : control_points_copy ) //point2D point : control_points_copy
     {
         glVertex2d ( point.getX(),point.getY() );
     }
+    glVertex2d ( control_points_copy.at ( 0 ).getX(),control_points_copy.at ( 0 ).getY() );
     glEnd();
 
 }
@@ -233,3 +234,4 @@ int main ( int argc, char** argv )
 
     return 0;
 }
+
